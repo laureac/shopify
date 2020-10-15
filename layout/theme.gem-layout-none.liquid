@@ -1,0 +1,70 @@
+{% comment %}
+	GEMPAGE BUILDER (https://apps.shopify.com/gempage)
+
+	You SHOULD NOT modify source code in this page because
+	It is automatically generated from GEMPAGE BUILDER
+	Try to edit page with the live editor.
+{% endcomment %}
+<!doctype html>
+<html class="no-js">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {% endif %}
+ 
+  {% capture seo_title %}
+    {% if template contains 'search' %}
+      {{ search.terms | replace: '*', '' | split: ' AND ' | last }} - {{ shop.name | escape }}
+    {% else %}
+      {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name | escape }}{% endunless %}
+    {% endif %}
+  {% endcapture %}
+
+  <title>{{ seo_title }}</title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  {% include 'social_meta' %}
+  {% include 'microdata_schema' %}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <link rel="preload" as="style" href="{{ 'css_main.scss.css' | asset_url }}">
+  <link rel="preconnect" href="//fonts.shopifycdn.com">
+
+  {{ 'css_main.scss.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
+  
+  {{ '//code.jquery.com/jquery-3.4.1.min.js' | script_tag }}
+
+  {% if template == 'customers/addresses' %}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+    <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+  {% endif %}
+
+  <noscript>
+    {{ 'css_noscript.scss.css' | asset_url | stylesheet_tag }}
+  </noscript>
+  
+<!--Gem_Page_Header_Script-->
+{% include 'gem-app-header-scripts' %}
+<!--End_Gem_Page_Header_Script-->
+</head>
+
+<body>
+<div class="gem-container">
+	{{ content_for_layout }}
+</div><!-- end .gem-container -->
+<!--Gem_Page_Footer_Script-->
+{% include 'gem-app-footer-scripts' %}
+<!--End_Gem_Page_Footer_Script-->
+</body>
+</html>

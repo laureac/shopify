@@ -1,0 +1,207 @@
+<div id="site-footer" class="site-footer site-box-container container--fullscreen site-footer-size--{{ section.settings.footer_size }}">
+
+  {% if section.blocks.size < 3 %}
+
+    <div class="site-box footer-box box--bigger lap--box--bigger box--top-align box--column-flow box__footer">
+
+      {% include 'footer_content-localization' %}
+      
+      {% for block in section.blocks %}
+        {% capture footer_block %}{{ 'footer_content-' | append: block.type }}{% endcapture %}
+        {% include footer_block %}
+      {% endfor %}
+
+      <p class="site-copyright to-bottom-content">
+        <span>{{ 'general.copyright' | t }} &copy; {{ 'now' | date: "%Y" }} <a href="{{ routes.root_url }}">{{ shop.name | escape }}</a></span>
+        <span>{{ powered_by_link }}</span>
+      </p>
+
+    </div>
+
+  {% else %}
+
+      {% for block in section.blocks %}
+
+        {% if forloop.index == 1 or forloop.index == 3 %}
+          <div class="site-box footer-box box--big lap--box--bigger box--top-align box--column-flow box__footer">
+            {% if forloop.index == 1 %}
+              {% include 'footer_content-localization' %}
+            {% endif %}
+        {% endif %}
+
+          {% capture footer_block %}{{ 'footer_content-' | append: block.type }}{% endcapture %}
+          {% include footer_block %}
+
+        {% if forloop.index == 2 or forloop.last == true %}
+          {% if forloop.index == 2 %} 
+            <p class="site-copyright to-bottom-content lap--hide">{{ 'general.copyright' | t }} &copy; {{ 'now' | date: "%Y" }} <a href="{{ routes.root_url }}">{{ shop.name | escape }}</a></p>
+          {% else %}
+            <p class="site-copyright to-bottom-content"><span class="hide lap--show">{{ 'general.copyright' | t }} &copy; {{ 'now' | date: "%Y" }} <a href="{{ routes.root_url }}">{{ shop.name | escape }}</a></span><span>{{ powered_by_link }}</span></p>
+          {% endif %}
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    
+  {% endif %}
+
+</div>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "class": "mount-footer",
+    "max_blocks": 5,
+     "settings": [
+      {
+        "type": "select",
+        "id": "footer_size",
+        "label": "Size",
+        "options": [
+          {
+            "value": "lg",
+            "label": "Large"
+          },
+          {
+            "value": "sm",
+            "label": "Small"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Language Selector",
+        "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_locale_selector",
+        "label": "Show language selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Currency Selector",
+        "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "contact",
+        "name": "Contact information",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Contact information"
+          },
+          {
+            "type": "text",
+            "id": "info",
+            "label": "Information",
+            "default": "email@shopify.com"
+          },
+          {
+            "type": "text",
+            "id": "link",
+            "label": "Information link",
+            "info": "Optional"
+          },
+          {
+            "type": "text",
+            "id": "caption",
+            "label": "Caption",
+            "default": "Invite customers to get in touch with you"
+          }
+        ]
+      },
+      {
+        "type": "menu",
+        "name": "Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Footer menu"
+          },
+          {
+            "type": "link_list",
+            "id": "footer_menu_select",
+            "label": "Menu",
+            "default": "footer",
+            "info": "This menu won't show dropdown items"
+          },
+          {
+            "type": "text",
+            "id": "caption",
+            "label": "Caption"
+          }
+        ]
+      },
+      {
+        "type": "social",
+        "name": "Social links",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Social links"
+          },
+          {
+            "type": "text",
+            "id": "caption",
+            "label": "Caption",
+            "default": "Invite customers to follow you on social networks"
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Newsletter"
+          },
+          {
+            "type": "richtext",
+            "id": "caption_new",
+            "label": "Caption",
+            "default": "<p>Invite customers to join your newsletter.<br/>Link to your <a href='#'>privacy policy</a>.</p>"
+          }
+        ]
+      },
+      {
+        "type": "payment",
+        "name": "Supported payment methods",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Supported payment methods"
+          },
+          {
+            "type": "text",
+            "id": "caption",
+            "label": "Caption"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

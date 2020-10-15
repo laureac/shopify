@@ -1,0 +1,17 @@
+<div id="site-search" class="site-nav-container" tabindex="-1">
+
+  <div class="site-nav-container-last">
+
+    <p class="title">{{ 'sidebar.search' | t }}</p>
+
+    {% include 'search_bar' with 'ajax' %}
+
+    <div class="top">
+      <div id="search-results" class="search-results predictive-search {% if settings.predictive_search_enable == false %} false-predictive {% endif %}"></div>
+    </div>
+
+		<div id="site-search-footer"></div>
+
+  </div>
+
+</div>

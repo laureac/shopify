@@ -1,0 +1,17 @@
+<div class="footer-content site-box-content" {{ block.shopify_attributes }}>
+
+  {% if block.settings.title %}
+    <h4>{{ block.settings.title | escape }}</h4>
+  {% endif %}
+	
+	<ul class="footer-links">
+		{% for link in linklists[block.settings.footer_menu_select].links %}
+			<li><a class="footer-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>
+		{% endfor %}
+	</ul>
+
+  {% if block.settings.caption %}
+    <p class="caption">{{ block.settings.caption | escape }}</p>
+  {% endif %}
+
+</div>

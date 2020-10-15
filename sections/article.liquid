@@ -1,0 +1,111 @@
+{% assign number_of_comments = article.comments_count %}
+{% capture date_format %} {{ 'general.date_format.month_day_year' | t }} {% endcapture %}
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+<div class="shopify-section">
+
+  <article id="section-blog" class="site-box-container container--fullscreen box--can-stick" itemscope itemtype="http://schema.org/Article">
+    
+    <div class="site-box box--big lap--box--small-fl box--typo-big box--center-align box--column-flow box__heading" data-order="0">
+
+      <div class="site-box-content less-padding fix-me-with-margin">
+            
+        <h1 class="title {% if article.image %} dark {% endif %}">
+          {{ article.title }}
+        </h1>
+        
+        {% if section.settings.meta_enable %}
+          <ul class="meta no-bullets {% if article.image %} dark {% endif %}">
+            <li class="author"><span itemprop="author">{{ 'blogs.article.author' | t: author: article.author }}</span></li>
+            <li class="date"><time datetime="{{ article.published_at | date: '%Y-%m-%d' }}" itemprop="datePublished">{{ article.published_at | time_tag: date_format }}</time></li>
+            {% if blog.comments_enabled? and article.comments_count > 0 %}<li class="comments"><span itemProp="commentCount">{{ 'blogs.comments.comments_with_count' | t: count: number_of_comments }}</span></li>{% endif %}
+          </ul>
+        {% endif %}
+
+      </div>
+
+      {% if article.image %} 
+
+        <span class="site-box-background with-image" aria-hidden="true">
+
+          <img
+            src="{{ article.image | img_url: '480x540', crop: 'center' }}" alt="{{ article.image.alt }}"
+            srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            data-srcset="{{ article.image | img_url: '480x540', crop: 'center' }} 480w, {{ article.image | img_url: '960x1080', crop: 'center' }} 1080w"
+            data-sizes="auto"
+            class="lazyload" 
+          />
+
+          <noscript><span class="ll-fallback" style="background-image:url({{ article.image | img_url: '960x1080', crop: 'center' }})"></span></noscript> 
+
+        </span> 
+
+      {% endif %}
+
+    </div>
+
+    <div class="site-box box--big lap--box--bigger box__text box--typo-big box--center-align box--column-flow scroll-movers-parent" data-order="1">
+
+      <div class="site-box-content fix-me-with-margin">
+        
+        <div class="rte" itemprop="articleBody">
+          {{ article.content }}
+        </div>
+
+        {% unless article.tags == blank %}
+          <div class="tags">
+            <span class="title">{{ 'blogs.tags.title' | t }}</span>
+            {% for tag in article.tags %}
+              <span class="tag"><a href="{{ blog.url }}/tagged/{{ tag.handle }}">{{ tag }}</a></span>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+        {% if section.settings.site_sharing %}
+          {% include 'social_sharing' %}
+        {% endif %}
+
+        {% if blog.next_article or blog.previous_article %}
+          <p class="post-navigation">
+            {% if blog.previous_article %}
+              <a class="left" href="{{ blog.previous_article }}"> <span aria-hidden="true">{% include 'asset_svg' with 'arrow_icon_smaller' %}</span> {{ 'blogs.article.older_post' | t }} </a>
+            {% endif %}
+            {% if blog.next_article %}
+              <a class="right" href="{{ blog.next_article }}">{{ 'blogs.article.newer_post' | t }} <span aria-hidden="true">{% include 'asset_svg' with 'arrow_icon_smaller' %}</span> </a>
+            {% endif %}
+          </p>
+        {% endif %}
+          
+        {% if blog.comments_enabled? %}
+          <div id="comments" class="comments">{% include 'article_comments' %}</div>
+        {% endif %}
+
+      </div>
+
+    </div>
+  
+  </article>
+
+</div>
+
+{% schema %}
+	{
+    "name": "Article page",
+    "class": "mount-article mount-images",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "meta_enable",
+        "default": true,
+        "label": "Show author, date and comments"
+      },
+      {
+        "type": "checkbox",
+        "id": "site_sharing",
+        "label": "Enable article sharing"
+      }
+    ]
+   }
+{% endschema %}
